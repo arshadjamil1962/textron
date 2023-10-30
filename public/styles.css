@@ -1,0 +1,305 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font-family: "Montserrat", sans-serif;
+}
+body {
+  background: #eee;
+  padding: 0 16px;
+}
+
+header {
+  background-color: #f5ba13;
+  /* margin: auto -16px; */
+  padding: 10px 30px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+  font-family: "McLaren", cursive;
+  font-weight: 200;
+  background-image: linear-gradient(to left,red,white,white,blue,blue,red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;  
+}
+
+footer {
+  /* position: absolute; */
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
+
+footer p {
+  color: #f5ba13;
+  font-family: "McLaren", cursive;
+  font-weight: 200;
+  background-image: linear-gradient(to left,red,white,white,blue,red,red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;  
+}
+
+.App-logo {
+  width: 50px;
+  height: 50px
+}
+
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.textContentContainer, .textAnalysisContainer{
+  display: inline-block;
+  margin: 20px auto 20px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 7px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+  width:100%;
+  min-height: 50vh;
+  background-color: antiquewhite;
+}
+
+.textContentContainer h6 {
+  font-size: large;
+  background-image: linear-gradient(to left,red,white,white,blue,blue,red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;  
+  margin: 0;
+}
+
+.textContentArea {
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #ccc;
+  padding: 5px;
+  width: 225px;
+  margin: 10px;
+  float: left;
+}
+
+.textContentArea p {
+  font-size: small;
+  margin-bottom: 5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100px;  
+}
+
+.textContentArea button {
+  position: relative;
+  /* margin-right: 5px; */
+  color: white;
+  border: none;
+  width: 60px;
+  height: 36px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 25%;
+  font-size: small;
+}
+
+.textContentArea .btnDelete {
+  float: right;
+  background-color: red;
+}
+
+.textContentArea .btnAnalyse {
+  float: left;
+  background-color: #f5ba13;
+}
+
+.textAnalysisContainer h6{
+  background-color: #f5ba13;
+  padding: 5px;
+  font-size: x-large;
+  background-image: linear-gradient(to left,red,white,white,blue,blue,red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;  
+}
+
+.textAnalysisArea {
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #ccc;
+  padding: 10px;
+  margin: 10px
+}
+
+.textAnalysisArea h5{
+  font-weight: 200;
+  background-image: linear-gradient(to left,red,blue,red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;  
+}
+
+.textAnalysisArea p{
+margin: 0
+}
+
+.spellDiff{
+color: black;
+background-color: tomato;
+}
+
+
+.textAnalysisflexArea {
+  display: flex;
+  flex-direction: row;
+  text-align-last: center;
+}
+
+.textAnalysisflexAreaItems{
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 50%;
+}
+
+.textAnalysisflexAreaItems h5{
+  text-align-last: auto;
+  font-weight: 200;
+  background-image: linear-gradient(to left,red,blue,red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;  
+}
+
+.sentimentAnalysisImage {
+  width: 100%;
+}
+
+.sentimentAnalysisSlider{
+  width: 75%;
+}
+.custom-range {
+  width: 100%;
+}
+
+.sentimentAnalysisSliderValue {
+  position: relative;
+  margin-top: -30px; /* Adjust this value to position the text within the thumb */
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.textAnalysisflexAreaItems p{
+  text-align-last: auto;
+}
+
+.textAnalysisflexAreaItems li{
+  text-align-last: auto;
+}
+
+form {
+  position: relative;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+}
+
+.formTextCreateArea {
+  width: 480px;
+  margin: 20px auto 20px auto;
+  padding: 15px;
+  background-color: antiquewhite;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  outline: none;
+  /* font-size: small; */
+  font-family: inherit;
+  resize: none;
+  background-color: antiquewhite;
+}
+
+.formTextCreateArea label {
+  margin-left: 10px;
+}
+
+.formTextCreateArea label select{
+  margin-left: 15px;
+  padding: 2px;
+  width: 250px;
+  background-color:  aliceblue;
+}
+
+form button {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  outline: none;
+}
+
+form .btnAdd {
+  position: absolute;
+  right: 18px;
+  bottom: -18px;
+  background: #f5ba13;
+  color: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+}
+
+.contentTextShowArea {
+  position: relative;
+  width: 100%;
+  margin: 30px auto auto auto;
+  padding: 10px;
+  background-color: antiquewhite;
+  border-radius: 7px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+}
+.contentTextShowArea h6 {
+  font-size: x-large;
+  background-image: linear-gradient(to left,red,white,white,blue,blue,red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;  
+}
+.contentTextShowArea .btnReturn {
+  position: absolute;
+  right: 18px;
+  top: -18px;
+  background: blue;
+  color: #fff;
+  border: none;
+  border-radius: 25%;
+  width: 60px;
+  height: 36px;
+  padding: 7px;
+  outline: none;
+  font-size: small;
+ }
