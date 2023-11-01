@@ -1,5 +1,4 @@
-import logo from '../logo.svg';
-
+import logo from '../ImgComponents/analysis2.png'
 export const AppHeader = () => (
   <>
     <header className='App-header'>

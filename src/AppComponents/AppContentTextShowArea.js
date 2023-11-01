@@ -1,4 +1,5 @@
 import React from "react";
+import btnImage from "../ImgComponents/return2.jpg"
 
 function AppContentTextShowArea(props) {
 
@@ -12,7 +13,9 @@ function AppContentTextShowArea(props) {
             <div className="contentTextShowArea">
                 <h6>Text Content</h6>
                 <p>{props.textContent.text2analyse}</p>
-                <button className="btnReturn" onClick={handleBackWay}>RETURN</button>
+                <button  className="btnReturnTop" onClick={handleBackWay}>
+                    <img className="btnImage" src={btnImage} alt="Return" />
+                </button>
             </div>
         </div>
     );

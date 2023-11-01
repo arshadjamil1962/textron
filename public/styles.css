@@ -3,9 +3,11 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 html {
   font-family: "Montserrat", sans-serif;
 }
+
 body {
   background: #eee;
   padding: 0 16px;
@@ -21,11 +23,11 @@ header {
 header h1 {
   font-family: "McLaren", cursive;
   font-weight: 200;
-  background-image: linear-gradient(to left,red,white,white,blue,blue,red);
+  background-image: linear-gradient(to left, red, white, white, blue, blue, red);
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  color: transparent;  
+  color: transparent;
 }
 
 footer {
@@ -40,11 +42,11 @@ footer p {
   color: #f5ba13;
   font-family: "McLaren", cursive;
   font-weight: 200;
-  background-image: linear-gradient(to left,red,white,white,blue,red,red);
+  background-image: linear-gradient(to left, red, white, white, blue, red, red);
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  color: transparent;  
+  color: transparent;
 }
 
 .App-logo {
@@ -58,25 +60,37 @@ footer p {
   min-height: 100vh;
 }
 
-.textContentContainer, .textAnalysisContainer{
+.appErrorPage {
+  text-align: center;
+  min-height: 75vh;
+  margin: 20px;
+}
+
+.appErrorPage img{
+height: 65vh;
+    width: -webkit-fill-available;
+}
+
+.textContentContainer,
+.textAnalysisContainer {
   display: inline-block;
   margin: 20px auto 20px auto;
   background: #fff;
   padding: 15px;
   border-radius: 7px;
   box-shadow: 0 1px 5px rgb(138, 137, 137);
-  width:100%;
+  width: 100%;
   min-height: 50vh;
   background-color: antiquewhite;
 }
 
 .textContentContainer h6 {
   font-size: large;
-  background-image: linear-gradient(to left,red,white,white,blue,blue,red);
+  background-image: linear-gradient(to left, red, white, white, blue, blue, red);
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  color: transparent;  
+  color: transparent;
   margin: 0;
 }
 
@@ -90,6 +104,12 @@ footer p {
   float: left;
 }
 
+.textContentArea h5 {
+  text-align: center;
+  background-color: antiquewhite;
+  font-size: 15px;
+}
+
 .textContentArea p {
   font-size: small;
   margin-bottom: 5px;
@@ -97,7 +117,7 @@ footer p {
   word-wrap: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 100px;  
+  height: 100px;
 }
 
 .textContentArea button {
@@ -123,15 +143,45 @@ footer p {
   background-color: #f5ba13;
 }
 
-.textAnalysisContainer h6{
+.textAnalysisContainer h6 {
   background-color: #f5ba13;
   padding: 5px;
   font-size: x-large;
-  background-image: linear-gradient(to left,red,white,white,blue,blue,red);
+  background-image: linear-gradient(to left, red, white, white, blue, blue, red);
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  color: transparent;  
+  color: transparent;
+}
+
+.textAnalysisContainerHeader {
+  display: flex;
+}
+
+.textAnalysisContainerHeader h6,
+.translationLangArea {
+  width: 50%
+}
+
+.translationLangArea {
+  width: 50%;
+  margin: auto;
+  text-align-last: right;
+}
+
+.translationLangArea label {
+  background-image: linear-gradient(to left, red, blue, red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.translationLangSelect {
+  margin: auto;
+  margin-left: 10px;
+  width: 200px;
+  text-align-last: left;
 }
 
 .textAnalysisArea {
@@ -142,22 +192,22 @@ footer p {
   margin: 10px
 }
 
-.textAnalysisArea h5{
+.textAnalysisArea h5 {
   font-weight: 200;
-  background-image: linear-gradient(to left,red,blue,red);
+  background-image: linear-gradient(to left, red, blue, red);
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  color: transparent;  
+  color: transparent;
 }
 
-.textAnalysisArea p{
-margin: 0
+.textAnalysisArea p {
+  margin: 0
 }
 
-.spellDiff{
-color: black;
-background-color: tomato;
+.spellDiff {
+  color: black;
+  background-color: antiquewhite;
 }
 
 
@@ -167,7 +217,7 @@ background-color: tomato;
   text-align-last: center;
 }
 
-.textAnalysisflexAreaItems{
+.textAnalysisflexAreaItems {
   background: #fff;
   border-radius: 7px;
   box-shadow: 0 2px 5px #ccc;
@@ -176,30 +226,32 @@ background-color: tomato;
   width: 50%;
 }
 
-.textAnalysisflexAreaItems h5{
+.textAnalysisflexAreaItems h5 {
   text-align-last: auto;
   font-weight: 200;
-  background-image: linear-gradient(to left,red,blue,red);
+  background-image: linear-gradient(to left, red, blue, red);
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  color: transparent;  
+  color: transparent;
 }
 
 .sentimentAnalysisImage {
   width: 100%;
 }
 
-.sentimentAnalysisSlider{
+.sentimentAnalysisSlider {
   width: 75%;
 }
+
 .custom-range {
   width: 100%;
 }
 
 .sentimentAnalysisSliderValue {
   position: relative;
-  margin-top: -30px; /* Adjust this value to position the text within the thumb */
+  margin-top: -30px;
+  /* Adjust this value to position the text within the thumb */
   color: #fff;
   background-color: #007bff;
   border-radius: 50%;
@@ -209,11 +261,11 @@ background-color: tomato;
   font-size: 14px;
 }
 
-.textAnalysisflexAreaItems p{
+.textAnalysisflexAreaItems p {
   text-align-last: auto;
 }
 
-.textAnalysisflexAreaItems li{
+.textAnalysisflexAreaItems li {
   text-align-last: auto;
 }
 
@@ -225,7 +277,7 @@ form {
 }
 
 .formTextCreateArea {
-  width: 480px;
+  width: 90%;
   margin: 20px auto 20px auto;
   padding: 15px;
   background-color: antiquewhite;
@@ -247,11 +299,11 @@ form textarea {
   margin-left: 10px;
 }
 
-.formTextCreateArea label select{
+.formTextCreateArea label select {
   margin-left: 15px;
   padding: 2px;
   width: 250px;
-  background-color:  aliceblue;
+  background-color: aliceblue;
 }
 
 form button {
@@ -281,25 +333,33 @@ form .btnAdd {
   border-radius: 7px;
   box-shadow: 0 1px 5px rgb(138, 137, 137);
 }
+
 .contentTextShowArea h6 {
   font-size: x-large;
-  background-image: linear-gradient(to left,red,white,white,blue,blue,red);
+  background-image: linear-gradient(to left, red, white, white, blue, blue, red);
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
-  color: transparent;  
+  color: transparent;
 }
-.contentTextShowArea .btnReturn {
+
+.btnReturnTop {
   position: absolute;
   right: 18px;
   top: -18px;
-  background: blue;
-  color: #fff;
   border: none;
-  border-radius: 25%;
-  width: 60px;
-  height: 36px;
-  padding: 7px;
-  outline: none;
-  font-size: small;
- }
+  border-radius: 50%;
+}
+
+.btnReturnBottom {
+  position: absolute;
+  border: none;
+  border-radius: 50%;
+  left: 93%
+}
+
+.btnImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
