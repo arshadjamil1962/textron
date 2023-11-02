@@ -18,36 +18,55 @@ function AppContentTextShowAnalysis(props) {
     props.setShowAnalysis(false);
   }
 
-  function words(s) {
-    // return s.match(/\w+/g);
-    return s.split(" ");
-  }
+  function GrammarSpellFix() {
+    var paramOriginalStr = props.textContent.text2analyse;
+    var paramCorrectedStr = props.textContent.textContentGrammar;
+    //Splitting given strings into array of words
+    const originalStr = paramOriginalStr.split(" ");
+    const correctedStr = paramCorrectedStr.split(" ");
 
-  function highlight(str, id, res) {
-    var text = "";
-    for (var i = 0; i < str.length; i++) {
-      var hasVal = res.includes(str[i]);
-      if (hasVal) {
-        text += " <span class='spellDiff'>" + str[i] + "</span> ";
+    // separating miss-spelled words from the original words array
+    var wordsCorrected = originalStr.filter(word => !correctedStr.includes(word));
+
+    var highlightedText = "";
+
+    //Setting the 2 arrays's indexes
+    let originalStrIndex = 0;
+    let correctedStrIndex = 0;
+    do {
+      var hasMatched = (correctedStr[correctedStrIndex] === originalStr[originalStrIndex]);
+
+      if (hasMatched) {
+        // for matching word in 2-arrays, adding the word in highlightedtext
+        // and shifting both array index to next index
+        highlightedText = highlightedText + " " + correctedStr[correctedStrIndex];
+        originalStrIndex++;
+        correctedStrIndex++;
       } else {
-        text += " " + str[i] + " ";
+
+        // checking that the un-matched word is a miss-spelled word
+        if (wordsCorrected.includes(originalStr[originalStrIndex])) {
+          // for un-matching and spelled corrected word, adding the word from corrected array in highlightedtext
+          highlightedText = highlightedText + "<span class='spellDiff'> " + correctedStr[correctedStrIndex] + " </span>";
+          // if its a miss-spelled word, shifting the index of original array to next index
+          // in order to match the shifting of corrected array index
+          originalStrIndex++;
+        } else {
+          // for un-matching and grammatically corrected word, adding the word from corrected array in highlightedtext
+          highlightedText = highlightedText + "<span class='gramDiff'> " + correctedStr[correctedStrIndex] + " </span>";
+
+        }
+        //shifting index of corrected array to next index.
+        correctedStrIndex++
       }
     }
-    return "<p>" + text + "</p>";
-  }
+    while (correctedStrIndex < correctedStr.length);
 
-  function GrammarSpellFix() {
-    var str1 = props.textContent.text2analyse;
-    var str2 = props.textContent.textContentGrammar;
-    let a = words(str1);
-    let b = words(str2);
-    let res1 = b.filter(i => !a.includes(i));
-    let grammarSpellText = highlight(b, "str2", res1);
-    // let grammarSpellText = "<p>" + props.textContent.textContentGrammarFix + "</p>";
-    grammarSpellText = "<p>" + grammarSpellText + "</p>";
-    return (
-      <div dangerouslySetInnerHTML={{ __html: grammarSpellText }} />
-    );
+    //wrapping highlightedtext as paragraph
+
+    highlightedText = "<p>" + highlightedText + "</p>";
+
+    return (<div dangerouslySetInnerHTML={{ __html: highlightedText }} />)
   }
 
   function handleTranslation(e) {
@@ -135,7 +154,7 @@ function AppContentTextShowAnalysis(props) {
 
   function TranslationArea() {
     return (
-      <div className="textAnalysisArea" style={{backgroundColor:"aliceblue"}}>
+      <div className="textAnalysisArea" style={{ backgroundColor: "aliceblue" }}>
         <h5>Translation in {translationLangRef.current}</h5>
         {/* <p>{props.textContent.textContentTranslate}</p> */}
         <p>{translationRef.current}</p>

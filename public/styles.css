@@ -210,6 +210,10 @@ height: 65vh;
   background-color: antiquewhite;
 }
 
+.gramDiff {
+  color: black;
+  background-color: rgb(151, 178, 252);
+}
 
 .textAnalysisflexArea {
   display: flex;
@@ -241,7 +245,7 @@ height: 65vh;
 }
 
 .sentimentAnalysisSlider {
-  width: 75%;
+  width: 70%;
 }
 
 .custom-range {

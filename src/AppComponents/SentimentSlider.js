@@ -1,8 +1,9 @@
 import React from 'react';
 
 function SentimentSlider(props) {
-
-  const leftMargin = (47 + (18.5 * props.sentiment))+"%";
+  //rounding to neareast .5 step
+  const sentimentValue = Math.round(props.sentiment * 2) / 2;
+  const leftMargin = (46.75 + (17 * sentimentValue))+"%";
 
     return (
         <div>
@@ -11,11 +12,11 @@ function SentimentSlider(props) {
             min="-2"
             max="2"
             step=".5"
-            value={props.sentiment}
+            value={sentimentValue}
             readOnly
             className="sentimentAnalysisSlider"
           />
-          <div className="sentimentAnalysisSliderValue" style={{marginLeft: leftMargin }}>{props.sentiment}</div>
+          <div className="sentimentAnalysisSliderValue" style={{marginLeft: leftMargin }}>{sentimentValue}</div>
         </div>
       );
     }
