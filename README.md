@@ -4,10 +4,15 @@ Following Environment Variable information is required
 	REACT_APP_ORGANIZATION_KEY=Your OpenAi Organization Key
 	REACT_APP_OPENAI_API_KEY=Your OpenAi API Key
 	
-This Treshold key is optional and controling the input words treshold, 
-if not set a default of 20 words treshold will be used	
+Following Treshold key is optional and controling the input words treshold, 
+if not set, a default of 20 words treshold will be used	
 
 	REACT_APP_INPUT_TRESHOLD=5
+	
+# Demo Text with Analysis
+
+A "Missing Content Image" appears at the start of Application, as there is no content in history.
+Add a [DEMO] text content with analysis, Click on the `Missing Content Image`.
 
 # Getting Started with Create React App
 
