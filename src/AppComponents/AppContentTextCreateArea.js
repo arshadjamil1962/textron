@@ -34,8 +34,8 @@ function AppContentTextCreateArea(props) {
         // with the provided process.env.REACT_APP_INPUT_TREHSHOLD 
         //OR default of 20
         const wordsInput = textContent.text2analyse.split(" ");
-        if(wordsInput.length < inputThreshold) {
-            props.notifyAlert("warning", "😥 Minimum of "+ inputThreshold + " words Required!", 4000);
+        if (wordsInput.length < inputThreshold) {
+            props.notifyAlert("warning", "😥 Minimum of " + inputThreshold + " words Required!", 4000);
             return
         }
 
@@ -166,7 +166,7 @@ function AppContentTextCreateArea(props) {
                     rows="3"
                 />
                 <button className="btnAdd" onClick={submitTextContent}>
-                Add   
+                    Add
                 </button>
             </form>
         </div>

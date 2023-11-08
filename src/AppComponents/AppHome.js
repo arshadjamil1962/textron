@@ -75,7 +75,6 @@ function AppHome() {
   }
 
   if (!openAI_API_KEY) {
-    // console.log('Missing')
     // notifyAlert("error", "OpenAI API key not configured, please Check with Administrator");
     return (
       <div>

@@ -16,30 +16,30 @@ function AppContentTextArea(props) {
 
   var emptyContent = props.textContent.length === 0;
 
-  function handleDemoContent () {
+  function handleDemoContent() {
     props.notifyAlert("info", "Demo Text w/Analysis Added ... !", 1000);
     props.onAdd(demoText);
   }
 
   return (
     <div className="textContentContainer">
-    <h6>Search history</h6>
-    {emptyContent && <img src={emptyContentImage} alt="Empty Content" onClick={handleDemoContent}/> }
+      <h6>Search history</h6>
+      {emptyContent && <img src={emptyContentImage} alt="Empty Content" onClick={handleDemoContent} />}
 
-    {props.textContent.map((contentItem, index) => {
-      return (
-        <AppContentTexts
-          key={index}
-          id={index}
-          text2analyse={contentItem.text2analyse}
-          textContentDateTime={contentItem.textContentDateTime}
-          onDelete={props.deleteTextContent}
-          onShow={props.showTextContent}
-        />
-      );
-    })}
-  </div>
-)
+      {props.textContent.map((contentItem, index) => {
+        return (
+          <AppContentTexts
+            key={index}
+            id={index}
+            text2analyse={contentItem.text2analyse}
+            textContentDateTime={contentItem.textContentDateTime}
+            onDelete={props.deleteTextContent}
+            onShow={props.showTextContent}
+          />
+        );
+      })}
+    </div>
+  )
 }
 
 export default AppContentTextArea

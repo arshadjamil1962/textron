@@ -12,7 +12,7 @@ if not set, a default of 20 words treshold will be used
 # Demo Text with Analysis
 
 A "Missing Content Image" appears at the start of Application, as there is no content in history.
-Add a [DEMO] text content with analysis, Click on the `Missing Content Image`.
+Add a `DEMO` text content with analysis, Click on the `Missing Content Image`.
 
 # Getting Started with Create React App
 
