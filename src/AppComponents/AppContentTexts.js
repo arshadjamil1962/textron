@@ -4,7 +4,7 @@ function AppContentTexts(props) {
     const maxLength = 175;
     let textContent = props.text2analyse;
     let textDateTime = props.textContentDateTime;
-    
+
     if (textContent.length > maxLength) {
         textContent = textContent.substr(0, maxLength) + '...'
     }
@@ -21,8 +21,12 @@ function AppContentTexts(props) {
         <div className="textContentArea">
             <h5>{textDateTime}</h5>
             <p>{textContent}</p>
-            <button className="btnAnalyse" onClick={handleShow}>ANALYSIS</button>
-            <button className="btnDelete" onClick={handleDelete}>DELETE</button>
+            <button className="btnAnalyse" onClick={handleShow}>
+                Text Analysis
+            </button>
+            <button className="btnDelete" onClick={handleDelete}>
+                Delete
+            </button>
         </div>
     );
 }

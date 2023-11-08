@@ -4,7 +4,7 @@ import AppContentTexts from './AppContentTexts';
 function AppContentTextArea(props) {
   return (
     <div className="textContentContainer">
-    <h6>Content's History</h6>
+    <h6>Search history</h6>
     {props.textContent.map((contentItem, index) => {
       return (
         <AppContentTexts

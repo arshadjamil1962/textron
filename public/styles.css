@@ -20,9 +20,9 @@ header {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
 
-header h1 {
-  font-family: "McLaren", cursive;
-  font-weight: 200;
+header h6 {
+  /* font-family: "McLaren", cursive; */
+  font-size: xx-large;
   background-image: linear-gradient(to left, red, white, white, blue, blue, red);
   -webkit-background-clip: text;
   -moz-background-clip: text;
@@ -51,7 +51,8 @@ footer p {
 
 .App-logo {
   width: 50px;
-  height: 50px
+  height: 50px;
+  margin-right: 10px;
 }
 
 .appContainer {
@@ -66,9 +67,9 @@ footer p {
   margin: 20px;
 }
 
-.appErrorPage img{
-height: 65vh;
-    width: -webkit-fill-available;
+.appErrorPage img {
+  height: 65vh;
+  width: -webkit-fill-available;
 }
 
 .textContentContainer,
@@ -136,11 +137,19 @@ height: 65vh;
 .textContentArea .btnDelete {
   float: right;
   background-color: red;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: double;
 }
 
 .textContentArea .btnAnalyse {
   float: left;
   background-color: #f5ba13;
+  border-radius: 25%;
+  width: 75px;
+  height: 50px;
+  border: double;
 }
 
 .textAnalysisContainer h6 {
@@ -324,8 +333,9 @@ form .btnAdd {
   background: #f5ba13;
   color: #fff;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 50px;
+  height: 50px;
+  border: double;
 }
 
 .contentTextShowArea {
@@ -352,14 +362,24 @@ form .btnAdd {
   right: 18px;
   top: -18px;
   border: none;
-  border-radius: 50%;
+  border-radius: 35%;
+  width: 60px;
+  height: 40px;
+  border: double;
+  color: white;
+  background-color: green;
 }
 
 .btnReturnBottom {
   position: absolute;
   border: none;
-  border-radius: 50%;
-  left: 93%
+  border-radius: 35%;
+  left: 93%;
+  width: 60px;
+  height: 40px;
+  border: double;
+  color: white;
+  background-color: green;
 }
 
 .btnImage {

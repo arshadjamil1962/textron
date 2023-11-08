@@ -8,6 +8,8 @@ function AppContentTextCreateArea(props) {
         text2analyse: ""
     });
 
+    const inputThreshold = process.env.REACT_APP_INPUT_TRESHOLD || 20;
+
     const readyToGoRef = useRef(true);
 
     const [, setForceUpdate] = useState();
@@ -25,9 +27,18 @@ function AppContentTextCreateArea(props) {
     function submitTextContent(event) {
         event.preventDefault();
         if (textContent.text2analyse === "") {
-            props.notifyAlert("warning", "😥 You Missed out the Text Content");
+            props.notifyAlert("warning", "😥 Missing Text Content");
             return
         }
+        //checking the Input Treshhold
+        // with the provided process.env.REACT_APP_INPUT_TREHSHOLD 
+        //OR default of 20
+        const wordsInput = textContent.text2analyse.split(" ");
+        if(wordsInput.length < inputThreshold) {
+            props.notifyAlert("warning", "😥 Minimum of "+ inputThreshold + " words Required!", 4000);
+            return
+        }
+
         if (readyToGoRef.current) {
             getContentAnalysis();
             // props.onAdd(textContentAnalysedRef.current);
@@ -57,7 +68,7 @@ function AppContentTextCreateArea(props) {
         let uM2 = chatMessage2.push({ "role": "user", "content": textContent.text2analyse });
 
         // Show the initial loading toast
-        const loadingToastId = toast.info('Analysis is Under Process ...', {
+        const loadingToastId = toast.info('Analysising the Content ...', {
             autoClose: 5000,
             closeOnClick: false,
             draggable: true,
@@ -70,10 +81,10 @@ function AppContentTextCreateArea(props) {
         let intervalId; // To keep track of the interval
 
         try {
-            // Start a 1-second interval to repeatedly show the loading toast
+            // Start a 5-second interval to repeatedly show the loading toast
             intervalId = setInterval(() => {
                 toast.update(loadingToastId, {
-                    render: 'Analysis is Under Process ...', // Update the message
+                    render: 'Analysising the Content ...', // Update the message
                 });
             }, 5000);
 
@@ -151,10 +162,12 @@ function AppContentTextCreateArea(props) {
                     name="text2analyse"
                     onChange={handleChange}
                     value={textContent.text2analyse}
-                    placeholder="Enter Text Content to Analyse..."
+                    placeholder="Enter text to analyze..."
                     rows="3"
                 />
-                <button className="btnAdd" onClick={submitTextContent}>Add</button>
+                <button className="btnAdd" onClick={submitTextContent}>
+                Add   
+                </button>
             </form>
         </div>
     );

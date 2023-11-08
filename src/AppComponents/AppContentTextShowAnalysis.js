@@ -212,7 +212,8 @@ function AppContentTextShowAnalysis(props) {
       </div>
 
       <button className="btnReturnBottom" onClick={handleBackWay}>
-        <img className="btnImage" src={btnImage} alt="Return" />
+        {/* <img className="btnImage" src={btnImage} alt="Return" /> */}
+        BACK
       </button>
 
     </div>
