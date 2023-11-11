@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import sentimentAnalysisImage from "../ImgComponents/sentimentanalysis.jpg"
 import SentimentSlider from "./SentimentSlider"
-import btnImage from "../ImgComponents/return2.jpg"
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -86,7 +85,7 @@ function AppContentTextShowAnalysis(props) {
     }];
     let uM2 = chatTranslationMessage.push({ "role": "user", "content": props.textContent.textContentGrammar });
     // Show the initial loading toast
-    const loadingToastId = toast.info('Translation in progress...', {
+    const loadingToastId = toast.info('Translation in progress ...', {
       autoClose: 5000,
       closeOnClick: false,
       draggable: true,
@@ -165,7 +164,7 @@ function AppContentTextShowAnalysis(props) {
   return (
     <div className="textAnalysisContainer">
       <div className="textAnalysisContainerHeader">
-        <h6>Content Anslysis</h6>
+        <h6>Content Analysis</h6>
         <TranslateLang />
       </div>
 

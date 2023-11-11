@@ -8,11 +8,35 @@ function AppContentTextCreateArea(props) {
         text2analyse: ""
     });
 
-    const inputThreshold = process.env.REACT_APP_INPUT_TRESHOLD || 20;
+    const inputThreshold = process.env.REACT_APP_INPUT_TRESHOLD || 5;
 
     const readyToGoRef = useRef(true);
 
     const [, setForceUpdate] = useState();
+
+    async function apiCallWithRetry(apiCallFunction, maxRetries = 3, delayBetweenRetries = 5000) {
+        try {
+            const result = await apiCallFunction();
+            return result;
+        } catch (error) {
+            if (maxRetries > 0 && isRateLimitError(error)) {
+                toast.warn(`Rate limit exceeded. Retrying in ${delayBetweenRetries / 1000} seconds...`);
+                await delay(delayBetweenRetries);
+                return apiCallWithRetry(apiCallFunction, maxRetries - 1, delayBetweenRetries);
+            } else {
+                throw error;
+            }
+        }
+    }
+
+    function isRateLimitError(error) {
+        // For OpenAI, you check if the error status is related to rate limiting
+        return error.message.includes('429'); // Example: Check if code is 429 (Too Many Requests)
+    }
+
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -26,28 +50,40 @@ function AppContentTextCreateArea(props) {
 
     function submitTextContent(event) {
         event.preventDefault();
-        if (textContent.text2analyse === "") {
+
+        const text2Check = textContent.text2analyse;
+
+        if (!readyToGoRef.current) {
+            props.notifyAlert("Info", "Sorry for Inconvenience! Analysis is yet to be Added", 2000);
+            return false;
+        }
+
+        if (text2Check === "") {
             props.notifyAlert("warning", "😥 Missing Text Content");
-            return
+            return false;
         }
         //checking the Input Treshhold
         // with the provided process.env.REACT_APP_INPUT_TREHSHOLD 
-        //OR default of 20
-        const wordsInput = textContent.text2analyse.split(" ");
+        //OR default of 10
+        const wordsInput = text2Check.split(" ");
         if (wordsInput.length < inputThreshold) {
-            props.notifyAlert("warning", "😥 Minimum of " + inputThreshold + " words Required!", 4000);
-            return
+            props.notifyAlert("warning", "😥 Minimum of " + inputThreshold + " words Required!", 2000);
+            return false;
         }
 
-        if (readyToGoRef.current) {
-            getContentAnalysis();
-            // props.onAdd(textContentAnalysedRef.current);
-        } else {
-            props.notifyAlert("Info", "Sorry for Inconvenience! Analysis is yet to be Added", 2000);
-        }
+        getContentAnalysis();
+        // // props.onAdd(textContentAnalysedRef.current);
+        // props.notifyAlert("Info", "Get Analysed", 2000);
     }
 
     async function getContentAnalysis() {
+        const chatMessage = [{
+            "role": "system",
+            "content": `my objective is to check that the provided text is not a junk,
+                        so check if the provided text can consider as a sentence.
+                        I need a single word result: true or false` }];
+        let uM = chatMessage.push({ "role": "user", "content": textContent.text2analyse });
+
         const chatMessage1 = [{
             "role": "system",
             "content": `for the provided text content provide
@@ -64,11 +100,10 @@ function AppContentTextCreateArea(props) {
                     " textContentRephrase: rephrase the following text in a different way",
                     " textContentContrast: a contrasting perspective or content related to the given text starting with 'In Contrast,'"
                     output as a json object:` }];
-
         let uM2 = chatMessage2.push({ "role": "user", "content": textContent.text2analyse });
 
         // Show the initial loading toast
-        const loadingToastId = toast.info('Analysising the Content ...', {
+        const loadingToastId = toast.info('Analysing the Content ...', {
             autoClose: 5000,
             closeOnClick: false,
             draggable: true,
@@ -84,61 +119,86 @@ function AppContentTextCreateArea(props) {
             // Start a 5-second interval to repeatedly show the loading toast
             intervalId = setInterval(() => {
                 toast.update(loadingToastId, {
-                    render: 'Analysising the Content ...', // Update the message
+                    render: 'Analysing the Content ...', // Update the message
                 });
             }, 5000);
 
-            const responses = await Promise.all([
+            const response0 = await apiCallWithRetry(() =>
                 props.openai.chat.completions.create({
                     model: "gpt-3.5-turbo",
-                    messages: chatMessage1,
+                    messages: chatMessage,
                     temperature: 0,
                     max_tokens: 256,
-                }),
-                props.openai.chat.completions.create({
-                    model: "gpt-3.5-turbo",
-                    messages: chatMessage2,
-                    temperature: 0,
-                    max_tokens: 256,
-                }),
-            ]);
+                })
+            );
 
-            // All API calls have completed successfully, and responses are available.
-            // Access the response data from the first API call
-            const response1 = responses[0];
-            // console.log(response1);
-            const textAnalysisResponse1 = JSON.parse(response1.choices[0].message.content);
-            const textAnalysisSummary = textAnalysisResponse1.textContentSummary;
-            const textAnalysisGrammar = textAnalysisResponse1.textContentGrammar;
-            const textAnalysisSentiment = textAnalysisResponse1.textContentSentiment;
-            const textAnalysisNER = textAnalysisResponse1.textContentNER;
-            // Access the response data from the second API call
-            const response2 = responses[1];
-            // console.log(response2);
-            const textAnalysisResponse2 = JSON.parse(response2.choices[0].message.content);
-            const textAnalysisRephrase = textAnalysisResponse2.textContentRephrase;
-            const textAnalysisContrast = textAnalysisResponse2.textContentContrast;
+            if (response0 && (response0.choices[0].message.content).toUpperCase() === 'TRUE') {
+                const responses = await Promise.all([
+                    apiCallWithRetry(() =>
+                        props.openai.chat.completions.create({
+                            model: "gpt-3.5-turbo",
+                            messages: chatMessage1,
+                            temperature: 0,
+                            max_tokens: 256,
+                        })
+                    ),
+                    apiCallWithRetry(() =>
+                        props.openai.chat.completions.create({
+                            model: "gpt-3.5-turbo",
+                            messages: chatMessage2,
+                            temperature: 0,
+                            max_tokens: 256,
+                        })
+                    ),
+                ]);
 
-            const textAnalysisDateTime = props.getContentDateTime();
+                // All API calls have completed successfully, and responses are available.
+                // Access the response data from the first API call
+                const response1 = responses[0];
+                // console.log(response1);
+                const textAnalysisResponse1 = JSON.parse(response1.choices[0].message.content);
+                const textAnalysisSummary = textAnalysisResponse1.textContentSummary;
+                const textAnalysisGrammar = textAnalysisResponse1.textContentGrammar;
+                const textAnalysisSentiment = textAnalysisResponse1.textContentSentiment;
+                const textAnalysisNER = textAnalysisResponse1.textContentNER;
+                // Access the response data from the second API call
+                const response2 = responses[1];
+                // console.log(response2);
+                const textAnalysisResponse2 = JSON.parse(response2.choices[0].message.content);
+                const textAnalysisRephrase = textAnalysisResponse2.textContentRephrase;
+                const textAnalysisContrast = textAnalysisResponse2.textContentContrast;
 
-            const analysedContent = {
-                ...textContent,
-                textContentDateTime: textAnalysisDateTime,
-                textContentSummary: textAnalysisSummary,
-                textContentGrammar: textAnalysisGrammar,
-                textContentSentiment: textAnalysisSentiment,
-                textContentNER: textAnalysisNER,
-                textContentRephrase: textAnalysisRephrase,
-                textContentContrast: textAnalysisContrast
+                const textAnalysisDateTime = props.getContentDateTime();
+
+                const analysedContent = {
+                    ...textContent,
+                    textContentDateTime: textAnalysisDateTime,
+                    textContentSummary: textAnalysisSummary,
+                    textContentGrammar: textAnalysisGrammar,
+                    textContentSentiment: textAnalysisSentiment,
+                    textContentNER: textAnalysisNER,
+                    textContentRephrase: textAnalysisRephrase,
+                    textContentContrast: textAnalysisContrast
+                }
+
+                setForceUpdate(Math.random()); //to Re-Render After Ref Assignment
+
+                props.onAdd(analysedContent);
+
+                toast.success('Text Added to Search History !');
+
+                setTextContent({
+                    text2analyse: ""
+                });
+
+            } else {
+                // Display an error toast if the first API call result is not as expected
+                toast.error('Not a Valid Sentence !');
             }
-
-            setForceUpdate(Math.random()); //to Re-Render After Ref Assignment
-
-            props.onAdd(analysedContent);
-
             clearInterval(intervalId);
             toast.dismiss(loadingToastId);
         } catch (error) {
+
             // Consider adjusting the error handling logic for your use case
             if (error.response) {
                 console.error(error.response.status, error.response.data);
@@ -147,12 +207,11 @@ function AppContentTextCreateArea(props) {
                 console.error(`Error with OpenAI API request: ${error.message}`);
                 props.notifyAlert("error", `Error with OpenAI API request: ${error.message}`, 5000);
             }
+        } finally {
+            // Clear the interval when the try-catch block is done
             clearInterval(intervalId);
             toast.dismiss(loadingToastId);
         }
-        setTextContent({
-            text2analyse: ""
-        });
     }
 
     return (

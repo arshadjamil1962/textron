@@ -1,11 +1,13 @@
 import React from 'react'
 import AppContentTexts from './AppContentTexts';
-import emptyContentImage from "../ImgComponents/empty2.jpg";
+import emptyContentImage from "../ImgComponents/empty1.png";
+import demoAdd from "../ImgComponents/unknown1.png"
+
 
 function AppContentTextArea(props) {
   const demoText = {
     text2analyse: "IT is a global force that connects people, businesses, and governmnts, enabling rapid advancements in various fields. From Silicon Valley in the United States, which renowned for its tech innovation and entrepreneurship, to India, a global IT outsourcing hub, and Silicon Wadi in Israel, known for its vibrant tech start-up scene, IT hubs are scatered across the globe, each contributing to global digital landscape.",
-    textContentDateTime: props.getContentDateTime(),
+    textContentDateTime: "demo text",//props.getContentDateTime(),
     textContentSummary: "IT is a global force, connecting people, businesses, and governments, with hubs like Silicon Valley, India, and Israel shaping the digital landscape.",
     textContentGrammar: "IT is a global force that connects people, businesses, and governments, enabling rapid advancements in various fields. From Silicon Valley in the United States, which is renowned for its tech innovation and entrepreneurship, to India, a global IT outsourcing hub, and Silicon Wadi in Israel, known for its vibrant tech start-up scene, IT hubs are scattered across the globe, each contributing to the global digital landscape.",
     textContentSentiment: '1.3',
@@ -17,14 +19,15 @@ function AppContentTextArea(props) {
   var emptyContent = props.textContent.length === 0;
 
   function handleDemoContent() {
-    props.notifyAlert("info", "Demo Text w/Analysis Added ... !", 1000);
     props.onAdd(demoText);
   }
 
   return (
-    <div className="textContentContainer">
-      <h6>Search history</h6>
-      {emptyContent && <img src={emptyContentImage} alt="Empty Content" onClick={handleDemoContent} />}
+    <div className="textContentContainer" style={{textAlign:"center"}}>
+      <h6>Search history
+        {emptyContent && <img src={demoAdd} alt="Empty Content" onClick={handleDemoContent} data-toggle="tooltip" data-placement="right" title="Add demo text"/>}
+      </h6>
+      {emptyContent && <img src={emptyContentImage} alt="Empty Content" />}
 
       {props.textContent.map((contentItem, index) => {
         return (
