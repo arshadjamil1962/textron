@@ -8,7 +8,7 @@ function AppContentTextCreateArea(props) {
         text2analyse: ""
     });
 
-    const inputThreshold = process.env.REACT_APP_INPUT_TRESHOLD || 5;
+    const inputThreshold = process.env.REACT_APP_INPUT_TRESHOLD || 1;
 
     const readyToGoRef = useRef(true);
 
