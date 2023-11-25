@@ -141,7 +141,8 @@ function AppContentTextShowAnalysis(props) {
           <select className="translationLangSelect"
             name="translationLang"
             value={translationLangRef.current}
-            onChange={handleTranslation}>
+            onChange={handleTranslation}
+            disabled={props.textContent.textContentCategory === "DEMO"}>
             {props.languageOptions.map((lang, index) => (
               <option key={index} value={lang}>{lang}</option>
             ))}
@@ -159,6 +160,12 @@ function AppContentTextShowAnalysis(props) {
         <p>{translationRef.current}</p>
       </div>
     )
+  }
+
+  if (props.textContent.textContentCategory === "DEMO") {
+    showTranslationRef.current = true;
+    translationLangRef.current = props.textContent.textTranslationLang;
+    translationRef.current = props.textContent.textTranslation;
   }
 
   return (

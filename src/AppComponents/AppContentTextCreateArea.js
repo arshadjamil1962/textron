@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import errorImg from '../ImgComponents/error1.jpg'
 
 function AppContentTextCreateArea(props) {
 
@@ -178,7 +179,8 @@ function AppContentTextCreateArea(props) {
                     textContentSentiment: textAnalysisSentiment,
                     textContentNER: textAnalysisNER,
                     textContentRephrase: textAnalysisRephrase,
-                    textContentContrast: textAnalysisContrast
+                    textContentContrast: textAnalysisContrast,
+                    textContentCategory: "LIVE"
                 }
 
                 setForceUpdate(Math.random()); //to Re-Render After Ref Assignment
@@ -214,19 +216,37 @@ function AppContentTextCreateArea(props) {
         }
     }
 
+    function FormInput() {
+        return (<div>
+            <textarea
+                name="text2analyse"
+                onChange={handleChange}
+                value={textContent.text2analyse}
+                placeholder="Enter text to analyze..."
+                rows="3"
+            />
+            <button className="btnAdd" onClick={submitTextContent}>
+                Add
+            </button>
+
+        </div>);
+    }
+
+    function FormError() {
+        return (<div className='errormsg'>
+            <img src={errorImg} alt="errorImage" />
+            <div>
+                <h5>Analysis can not be performed as OpenAI Key is Missing!</h5>
+                <h5>Contact Administrator.</h5>
+                <h6>Click Icon next to "Search history" title to add Demo Text</h6>
+            </div>
+        </div>)
+    }
     return (
         <div>
             <form className="formTextCreateArea">
-                <textarea
-                    name="text2analyse"
-                    onChange={handleChange}
-                    value={textContent.text2analyse}
-                    placeholder="Enter text to analyze..."
-                    rows="3"
-                />
-                <button className="btnAdd" onClick={submitTextContent}>
-                    Add
-                </button>
+                {props.validAPIKeyRef && <FormInput />}
+                {!props.validAPIKeyRef && <FormError />}
             </form>
         </div>
     );

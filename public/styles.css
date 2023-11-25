@@ -331,6 +331,17 @@ form textarea {
   background-color: aliceblue;
 }
 
+.formTextCreateArea img {
+width: 200x;
+height: 100px;
+margin-right: 25px;
+}
+
+.errormsg {
+  display: flex;
+  justify-content: center;
+}
+
 form button {
   border: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);

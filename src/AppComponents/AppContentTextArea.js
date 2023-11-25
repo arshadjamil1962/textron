@@ -13,7 +13,10 @@ function AppContentTextArea(props) {
     textContentSentiment: '1.3',
     textContentNER: ["IT (ORGANIZATION)", "Silicon Valley (LOCATION)", "the United States (LOCATION)", "India (LOCATION)", "Silicon Wadi (LOCATION)", "Israel (LOCATION)"],
     textContentRephrase: "Information Technology (IT) serves as a worldwide catalyst, fostering connections between individuals, enterprises, and governments, thereby facilitating swift progress in diverse domains. This phenomenon is evident in IT hubs situated across the globe, including Silicon Valley's tech innovation, India's prominence as a global IT outsourcing hub, and Silicon Wadi's thriving tech start-up scene, all playing their part in shaping the global digital landscape.",
-    textContentContrast: "In contrast, Information Technology (IT) is often viewed as a global disruptor, raising concerns about the potential disconnect between individuals, businesses, and governments. This phenomenon is particularly contentious in the case of IT hubs across the world, such as Silicon Valley's rapid technological advancements, India's expanding influence in the outsourcing industry, and Silicon Wadi's exponential growth in tech start-ups, all contributing to uncertainties about the evolving digital landscape on a global scale."
+    textContentContrast: "In contrast, Information Technology (IT) is often viewed as a global disruptor, raising concerns about the potential disconnect between individuals, businesses, and governments. This phenomenon is particularly contentious in the case of IT hubs across the world, such as Silicon Valley's rapid technological advancements, India's expanding influence in the outsourcing industry, and Silicon Wadi's exponential growth in tech start-ups, all contributing to uncertainties about the evolving digital landscape on a global scale.",
+    textContentCategory: "DEMO",
+    textTranslationLang: "Japanese",
+    textTranslation: "情報技術（IT）は、世界中の個人、企業、政府間のつながりを促進し、さまざまな分野で急速な進歩を可能にする世界的なカタリストとして機能しています。これは、シリコンバレーのテクノロジーイノベーション、世界的なITアウトソーシングハブとしてのインド、そしてテクノロジースタートアップの盛んなイスラエルのシリコンワディなど、世界中に存在するITハブに現れており、それぞれがグローバルなデジタルランドスケープの形成に寄与しています。"
   }
 
   var emptyContent = props.textContent.length === 0;
@@ -23,9 +26,9 @@ function AppContentTextArea(props) {
   }
 
   return (
-    <div className="textContentContainer" style={{textAlign:"center"}}>
+    <div className="textContentContainer" style={{ textAlign: "center" }}>
       <h6>Search history
-        {emptyContent && <img src={demoAdd} alt="Empty Content" onClick={handleDemoContent} data-toggle="tooltip" data-placement="right" title="Add demo text"/>}
+        {emptyContent && <img src={demoAdd} alt="Empty Content" onClick={handleDemoContent} data-toggle="tooltip" data-placement="right" title="Add demo text" />}
       </h6>
       {emptyContent && <img src={emptyContentImage} alt="Empty Content" />}
 

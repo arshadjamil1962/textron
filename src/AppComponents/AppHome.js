@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,11 +9,10 @@ import AppContentTextCreateArea from "./AppContentTextCreateArea";
 import AppContentTextArea from "./AppContentTextArea";
 import AppContentTextShowArea from "./AppContentTextShowArea";
 import AppContentTextShowAnalysis from "./AppContentTextShowAnalysis";
-import AppError from "./AppError";
 
 import OpenAI from "openai";
 
-const openAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+var openAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
 function AppHome() {
   const year = new Date().getFullYear();
@@ -25,6 +24,8 @@ function AppHome() {
   const [textContenet2Show, setTextContent2Show] = useState();
 
   const [showAnalysis, setShowAnalysis] = useState(false);
+
+  const validAPIKeyRef = useRef(true);
 
   const notifyAlert = (alertType, alertMessage, alertDelay = 1000) =>
     toast(alertMessage, {
@@ -76,13 +77,17 @@ function AppHome() {
 
   if (!openAI_API_KEY) {
     // notifyAlert("error", "OpenAI API key not configured, please Check with Administrator");
-    return (
-      <div>
-        <AppHeader />
-        <AppError errorMessage={"OpenAI API key not configured, please Check with Administrator"} />
-        <AppFooter AppYear={year} />
-      </div>
-    );
+    openAI_API_KEY = "";
+    validAPIKeyRef.current = false;
+    console.log('openAI_API_KEY:' + openAI_API_KEY);
+    console.log('validAPIKey:' + validAPIKeyRef.current);
+    // return (
+    //   <div>
+    //     <AppHeader />
+    //     <AppError errorMessage={"OpenAI API key not configured, please Check with Administrator"} />
+    //     <AppFooter AppYear={year} />
+    //   </div>
+    // );
   }
 
   const openai = new OpenAI({
@@ -93,11 +98,13 @@ function AppHome() {
     <div className="appContainer">
       <ToastContainer />
       <AppHeader />
+
       {!showAnalysis && <AppContentTextCreateArea
         onAdd={addTextContent}
         notifyAlert={notifyAlert}
         openai={openai}
         getContentDateTime={getContentDateTime}
+        validAPIKeyRef={validAPIKeyRef.current}
       />}
 
       {!showAnalysis && <AppContentTextArea
@@ -106,18 +113,21 @@ function AppHome() {
         showTextContent={showTextContent}
         onAdd={addTextContent}
         getContentDateTime={getContentDateTime}
-        notifyAlert={notifyAlert} />}
+        notifyAlert={notifyAlert}
+      />}
 
       {showAnalysis && <AppContentTextShowArea
         textContent={textContenet2Show}
-        setShowAnalysis={setShowAnalysis} />}
+        setShowAnalysis={setShowAnalysis}
+      />}
 
       {showAnalysis && <AppContentTextShowAnalysis
         textContent={textContenet2Show}
         setShowAnalysis={setShowAnalysis}
         languageOptions={languageOptions}
         notifyAlert={notifyAlert}
-        openai={openai} />}
+        openai={openai}
+      />}
 
       <AppFooter AppYear={year} />
     </div>
