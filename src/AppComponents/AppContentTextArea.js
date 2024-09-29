@@ -27,7 +27,7 @@ function AppContentTextArea(props) {
 
   return (
     <div className="textContentContainer" style={{ textAlign: "center" }}>
-      <h6>Search history
+      <h6>Search History
         {emptyContent && <img src={demoAdd} alt="Empty Content" onClick={handleDemoContent} data-toggle="tooltip" data-placement="right" title="Add demo text" />}
       </h6>
       {emptyContent && <img src={emptyContentImage} alt="Empty Content" />}

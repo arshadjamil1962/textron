@@ -10,9 +10,9 @@ import AppContentTextArea from "./AppContentTextArea";
 import AppContentTextShowArea from "./AppContentTextShowArea";
 import AppContentTextShowAnalysis from "./AppContentTextShowAnalysis";
 
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-var openAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+var gemini_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
 function AppHome() {
   const year = new Date().getFullYear();
@@ -75,24 +75,22 @@ function AppHome() {
     setTextContent2Show(text2Show)
   }
 
-  if (!openAI_API_KEY) {
-    // notifyAlert("error", "OpenAI API key not configured, please Check with Administrator");
-    openAI_API_KEY = "";
+  if (!gemini_API_KEY) {
+    // notifyAlert("error", gemini API key not configured, please Check with Administrator");
+    gemini_API_KEY = "";
     validAPIKeyRef.current = false;
-    console.log('openAI_API_KEY:' + openAI_API_KEY);
+    console.log('gemini_API_KEY:' +gemini_API_KEY);
     console.log('validAPIKey:' + validAPIKeyRef.current);
     // return (
     //   <div>
     //     <AppHeader />
-    //     <AppError errorMessage={"OpenAI API key not configured, please Check with Administrator"} />
+    //     <AppError errorMessage={gemini API key not configured, please Check with Administrator"} />
     //     <AppFooter AppYear={year} />
     //   </div>
     // );
   }
 
-  const openai = new OpenAI({
-    apiKey: openAI_API_KEY, dangerouslyAllowBrowser: true,
-  });
+  const geminiAPI = new GoogleGenerativeAI(gemini_API_KEY);
 
   return (
     <div className="appContainer">
@@ -102,7 +100,7 @@ function AppHome() {
       {!showAnalysis && <AppContentTextCreateArea
         onAdd={addTextContent}
         notifyAlert={notifyAlert}
-        openai={openai}
+        geminiAPI={geminiAPI}
         getContentDateTime={getContentDateTime}
         validAPIKeyRef={validAPIKeyRef.current}
       />}
@@ -126,7 +124,7 @@ function AppHome() {
         setShowAnalysis={setShowAnalysis}
         languageOptions={languageOptions}
         notifyAlert={notifyAlert}
-        openai={openai}
+        geminiAPI={geminiAPI}
       />}
 
       <AppFooter AppYear={year} />

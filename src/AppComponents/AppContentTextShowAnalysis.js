@@ -79,12 +79,12 @@ function AppContentTextShowAnalysis(props) {
   }
 
   async function fetchTranslationResponses() {
-    const chatTranslationMessage = [{
-      "role": "system",
-      "content": `for the provided text content translate content in ` + translationLangRef.current
-    }];
-    let uM2 = chatTranslationMessage.push({ "role": "user", "content": props.textContent.textContentGrammar });
-    // Show the initial loading toast
+    let theSystemInstruction = "for the provided text content translate content into "+translationLangRef.current;
+    const model = props.geminiAPI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: theSystemInstruction,
+    });
+
     const loadingToastId = toast.info('Translation in progress ...', {
       autoClose: 5000,
       closeOnClick: false,
@@ -104,15 +104,10 @@ function AppContentTextShowAnalysis(props) {
           render: 'Translation in progress...', // Update the message
         });
       }, 5000);
-      const responses = await
-        props.openai.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: chatTranslationMessage,
-          temperature: 0,
-          max_tokens: 256,
-        });
 
-      const textContentResponse = responses.choices[0].message.content;
+      const result = await model.generateContent(props.textContent.textContentGrammar);
+
+      const textContentResponse = result.response.text();
       translationRef.current = textContentResponse;
 
       clearInterval(intervalId);
@@ -125,8 +120,8 @@ function AppContentTextShowAnalysis(props) {
         console.error(error.response.status, error.response.data);
         props.notifyAlert("error", `Error with Response: ${error.response.status}+"${error.response.data}`, 5000);
       } else {
-        console.error(`Error with OpenAI API request: ${error.message}`);
-        props.notifyAlert("error", `Error with OpenAI API request: ${error.message}`, 5000);
+        console.error(`Error with API request: ${error.message}`);
+        props.notifyAlert("error", `Error with API request: ${error.message}`, 5000);
       }
       clearInterval(intervalId);
       toast.dismiss(loadingToastId);

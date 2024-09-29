@@ -40,6 +40,7 @@ function AppContentTextCreateArea(props) {
     }
 
     function handleChange(event) {
+        event.preventDefault();
         const { name, value } = event.target;
         setTextContent(prevTextContent => {
             return {
@@ -48,6 +49,12 @@ function AppContentTextCreateArea(props) {
             };
         });
     }
+
+    function clearTextContent(event) {
+        event.preventDefault();
+        // console.log(textContent.text2analyse);
+        setTextContent({ text2analyse: "" });
+    };
 
     function submitTextContent(event) {
         event.preventDefault();
@@ -78,30 +85,43 @@ function AppContentTextCreateArea(props) {
     }
 
     async function getContentAnalysis() {
-        const chatMessage = [{
-            "role": "system",
-            "content": `my objective is to check that the provided text is not a junk,
-                        so check if the provided text can consider as a sentence.
-                        I need a single word result: true or false` }];
-        let uM = chatMessage.push({ "role": "user", "content": textContent.text2analyse });
 
-        const chatMessage1 = [{
-            "role": "system",
-            "content": `for the provided text content provide
-                    " textContentGrammar: "grammatically corrected content",
-                    " textContentSummary: summary of the content",
-                    " textContentNER: Named Entity Recognition along with their type as a list with output of NER entity and type as ‘entity (type)’" and
-                    " textContentSentiment: Please analyze the sentiment of the following text and provide a numerical score between -2 and +2, where -2 indicates a highly negative sentiment, 1 indicate normal negative sentiment, 0 indicates a neutral sentiment, 1 indicate a normal positive sentiment and 2 indicates a highly positive sentiment"
-                    output as a json object:` }];
-        let uM1 = chatMessage1.push({ "role": "user", "content": textContent.text2analyse });
+        // const theSystemInstruction0 = `my objective is to check that the provided text is not a junk,
+        //                 so check if the provided text can consider as a sentence.
+        //                 I need a single word result: true or false`;
 
-        const chatMessage2 = [{
-            "role": "system",
-            "content": `for the provided text content provide
-                    " textContentRephrase: rephrase the following text in a different way",
-                    " textContentContrast: a contrasting perspective or content related to the given text starting with 'In Contrast,'"
-                    output as a json object:` }];
-        let uM2 = chatMessage2.push({ "role": "user", "content": textContent.text2analyse });
+        // const model0 = props.geminiAPI.getGenerativeModel({
+        //     model: "gemini-1.5-flash",
+        //     systemInstruction: theSystemInstruction0,
+        //     });
+
+        const theSystemInstruction1 = `Analyze the provided text and return the following information in JSON format:
+            {
+            textContentGrammar: grammatically corrected content,
+            textContentSummary: summary of the content,
+            textContentNER: [
+                entity1 (type1),
+                entity2 (type2),
+                // ... other entities
+            ],
+            textContentSentiment: -2.0 // Replace with the calculated sentiment score
+            }`;
+        const model1 = props.geminiAPI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            systemInstruction: theSystemInstruction1,
+            generationConfig: { responseMimeType: "application/json" }
+        });
+
+        const theSystemInstruction2 = `Analyze the provided text and return the following information in JSON format
+            {
+            textContentRephrase: rephrased text,
+            textContentContrast: a contrasting perspective or content related to the given text starting with 'In Contrast,
+            }`;
+        const model2 = props.geminiAPI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            systemInstruction: theSystemInstruction2,
+            generationConfig: { responseMimeType: "application/json" }
+        });
 
         // Show the initial loading toast
         const loadingToastId = toast.info('Analysing the Content ...', {
@@ -124,50 +144,36 @@ function AppContentTextCreateArea(props) {
                 });
             }, 5000);
 
-            const response0 = await apiCallWithRetry(() =>
-                props.openai.chat.completions.create({
-                    model: "gpt-3.5-turbo",
-                    messages: chatMessage,
-                    temperature: 0,
-                    max_tokens: 256,
-                })
-            );
+            // const result0 = await model0.generateContent(textContent.text2analyse);
 
-            if (response0 && (response0.choices[0].message.content).toUpperCase() === 'TRUE') {
-                const responses = await Promise.all([
+            //            if (result0 && (result0.response.text()).toUpperCase() === 'TRUE') {
+            if (1 == 1) {
+                const results = await Promise.all([
                     apiCallWithRetry(() =>
-                        props.openai.chat.completions.create({
-                            model: "gpt-3.5-turbo",
-                            messages: chatMessage1,
-                            temperature: 0,
-                            max_tokens: 256,
-                        })
+                        model1.generateContent(textContent.text2analyse)
                     ),
                     apiCallWithRetry(() =>
-                        props.openai.chat.completions.create({
-                            model: "gpt-3.5-turbo",
-                            messages: chatMessage2,
-                            temperature: 0,
-                            max_tokens: 256,
-                        })
+                        model2.generateContent(textContent.text2analyse)
                     ),
                 ]);
 
-                // All API calls have completed successfully, and responses are available.
-                // Access the response data from the first API call
-                const response1 = responses[0];
-                // console.log(response1);
-                const textAnalysisResponse1 = JSON.parse(response1.choices[0].message.content);
-                const textAnalysisSummary = textAnalysisResponse1.textContentSummary;
-                const textAnalysisGrammar = textAnalysisResponse1.textContentGrammar;
-                const textAnalysisSentiment = textAnalysisResponse1.textContentSentiment;
-                const textAnalysisNER = textAnalysisResponse1.textContentNER;
-                // Access the response data from the second API call
-                const response2 = responses[1];
-                // console.log(response2);
-                const textAnalysisResponse2 = JSON.parse(response2.choices[0].message.content);
-                const textAnalysisRephrase = textAnalysisResponse2.textContentRephrase;
-                const textAnalysisContrast = textAnalysisResponse2.textContentContrast;
+                // All API calls have completed successfully, and results are available.
+                // Access the result data from the first API call
+                const result1 = results[0];
+                // console.log(result1.response.text());
+                const result2 = results[1];
+                // console.log(result2.response.text());
+
+                const textAnalysisResult1 = JSON.parse(result1.response.text());
+                const textAnalysisSummary = textAnalysisResult1.textContentSummary;
+                const textAnalysisGrammar = textAnalysisResult1.textContentGrammar;
+                const textAnalysisSentiment = textAnalysisResult1.textContentSentiment;
+                const textAnalysisNER = textAnalysisResult1.textContentNER;
+
+                // Access the result data from the second API call
+                const textAnalysisResult2 = JSON.parse(result2.response.text());
+                const textAnalysisRephrase = textAnalysisResult2.textContentRephrase;
+                const textAnalysisContrast = textAnalysisResult2.textContentContrast;
 
                 const textAnalysisDateTime = props.getContentDateTime();
 
@@ -187,15 +193,21 @@ function AppContentTextCreateArea(props) {
 
                 props.onAdd(analysedContent);
 
-                toast.success('Text Added to Search History !');
+                toast.success('Search History Updated with New Analysis !!!');
 
-                setTextContent({
-                    text2analyse: ""
-                });
+                setTextContent({ text2analyse: "" });
 
             } else {
                 // Display an error toast if the first API call result is not as expected
                 toast.error('Not a Valid Sentence !');
+                // const theSystemInstruction0 = `Why its not a complete sentence.`;
+
+                // const model0 = props.geminiAPI.getGenerativeModel({
+                //     model: "gemini-1.5-flash",
+                //     systemInstruction: theSystemInstruction0,
+                //     });
+                //     const result0 = await model0.generateContent(textContent.text2analyse);
+                //     console.log(result0.response.text());              
             }
             clearInterval(intervalId);
             toast.dismiss(loadingToastId);
@@ -206,8 +218,8 @@ function AppContentTextCreateArea(props) {
                 console.error(error.response.status, error.response.data);
                 props.notifyAlert("error", `Error with Response: ${error.response.status}+"${error.response.data}`, 5000);
             } else {
-                console.error(`Error with OpenAI API request: ${error.message}`);
-                props.notifyAlert("error", `Error with OpenAI API request: ${error.message}`, 5000);
+                console.error(`Error with API request: ${error.message}`);
+                props.notifyAlert("error", `Error with API request: ${error.message}`, 5000);
             }
         } finally {
             // Clear the interval when the try-catch block is done
@@ -216,38 +228,68 @@ function AppContentTextCreateArea(props) {
         }
     }
 
-    function FormInput() {
-        return (<div>
-            <textarea
-                name="text2analyse"
-                onChange={handleChange}
-                value={textContent.text2analyse}
-                placeholder="Enter text to analyze..."
-                rows="3"
-            />
-            <button className="btnAdd" onClick={submitTextContent}>
-                Add
-            </button>
+    // function FormInput() {
+    //     return (<form className="formTextCreateArea">
+    //         <textarea
+    //             name="text2analyse"
+    //             onChange={handleChange}
+    //             value={textContent.text2analyse}
+    //             placeholder="Enter text to analyze..."
+    //             rows="3"
+    //         />
+    //         <button className="btnAdd" onClick={submitTextContent}>
+    //             Add
+    //         </button>
+    //         <button className="btnClear" onClick={clearTextContent}>
+    //             Clear
+    //         </button>
 
-        </div>);
-    }
+    //     </form>);
+    // }
 
-    function FormError() {
-        return (<div className='errormsg'>
-            <img src={errorImg} alt="errorImage" />
-            <div>
-                <h5>Analysis can not be performed as OpenAI Key is Missing!</h5>
-                <h5>Contact Administrator.</h5>
-                <h6>Click Icon next to "Search history" title to add Demo Text</h6>
-            </div>
-        </div>)
-    }
+    // function FormError() {
+    //     return (<div className='errormsg'>
+    //         <img src={errorImg} alt="errorImage" />
+    //         <div>
+    //             <h5>Analysis can not be performed as API Key is Missing!</h5>
+    //             <h5>Contact Administrator.</h5>
+    //             <h6>Click Icon next to "Search History" title to add Demo Text</h6>
+    //         </div>
+    //     </div>)
+    // }
+
     return (
         <div>
-            <form className="formTextCreateArea">
-                {props.validAPIKeyRef && <FormInput />}
-                {!props.validAPIKeyRef && <FormError />}
+            {/* {props.validAPIKeyRef && <FormInput />}
+                {!props.validAPIKeyRef && <FormError />} */}
+            {props.validAPIKeyRef && <form className="formTextCreateArea">
+                <textarea
+                    name="text2analyse"
+                    onChange={handleChange}
+                    value={textContent.text2analyse}
+                    placeholder="Enter text to analyze..."
+                    rows="3"
+                />
+                <button className="btnAdd" onClick={submitTextContent}>
+                    Submit
+                </button>
+                <button className="btnClear" onClick={clearTextContent}>
+                    Clear
+                </button>
+
             </form>
+            }
+
+            {!props.validAPIKeyRef && <form className="formTextCreateArea">
+                <div className='errormsg'>
+                    <img src={errorImg} alt="errorImage" />
+                    <div>
+                        <h5>Analysis can not be performed as API Key is Missing!</h5>
+                        <h5>Contact Administrator.</h5>
+                        <h6>Click Icon next to "Search History" title to add Demo Text</h6>
+                    </div>
+                </div>
+            </form>}
         </div>
     );
 }

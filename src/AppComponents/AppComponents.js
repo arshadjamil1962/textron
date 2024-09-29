@@ -1,4 +1,5 @@
 // require('dotenv').config();
+/*
 import { Configuration, OpenAIApi } from "openai";
 
 export const openAiConfiguration = new Configuration({
@@ -8,3 +9,4 @@ export const openAiConfiguration = new Configuration({
 
 export const openai = new OpenAIApi(openAiConfiguration);
 
+*/
