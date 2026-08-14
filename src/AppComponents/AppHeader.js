@@ -6,7 +6,7 @@ export const AppHeader = () => (
         <img src={logo} className="App-logo  d-flex" alt="logo" />
         <div className="d-flex">
         T e x t r o n
-        <p className="App_version">Version 2.0</p>
+        <p className="App_version">Version 2.5</p>
         </div>
       </h6>
 

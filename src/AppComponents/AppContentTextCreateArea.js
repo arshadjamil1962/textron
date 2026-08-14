@@ -107,7 +107,7 @@ function AppContentTextCreateArea(props) {
             textContentSentiment: -2.0 // Replace with the calculated sentiment score
             }`;
         const model1 = props.geminiAPI.getGenerativeModel({
-            model: "gemini-1.5-flash",
+            model: "gemini-3.6-flash",
             systemInstruction: theSystemInstruction1,
             generationConfig: { responseMimeType: "application/json" }
         });
@@ -118,7 +118,7 @@ function AppContentTextCreateArea(props) {
             textContentContrast: a contrasting perspective or content related to the given text starting with 'In Contrast,
             }`;
         const model2 = props.geminiAPI.getGenerativeModel({
-            model: "gemini-1.5-flash",
+            model: "gemini-3.6-flash",
             systemInstruction: theSystemInstruction2,
             generationConfig: { responseMimeType: "application/json" }
         });

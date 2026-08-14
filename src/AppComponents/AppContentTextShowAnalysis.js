@@ -81,7 +81,7 @@ function AppContentTextShowAnalysis(props) {
   async function fetchTranslationResponses() {
     let theSystemInstruction = "for the provided text content translate content into "+translationLangRef.current;
     const model = props.geminiAPI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-3.6-flash",
       systemInstruction: theSystemInstruction,
     });
 
