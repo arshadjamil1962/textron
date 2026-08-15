@@ -1,6 +1,9 @@
 {
   "name": "taxtron",
   "version": "0.1.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "private": true,
   "dependencies": {
     "@google/generative-ai": "^0.17.1",
